@@ -1,0 +1,24 @@
+from app.app import db
+
+class Users(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key = True)
+    first_name = db.Column(db.String(80))
+    last_name = db.Column(db.String(80))
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+class Chat_Session(db.Model):
+    __tablename__ = "chat_sessions"
+
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    title = db.Column(db.String(255), default="New Chat")
+
+class Message(db.Model):
+    __tablename__ = "messages"
+
+    id = db.Column(db.Integer, primary_key=True)
+    chat_id = db.Column(db.Integer, db.ForeignKey("chat_sessions.id"), nullable=False)
+    text_body = db.Column(db.Text, nullable=False)
