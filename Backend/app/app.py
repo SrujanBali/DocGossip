@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 
@@ -18,6 +18,9 @@ def create_app():
     with app.app_context():
         from app import models
         db.create_all()
+
+    from app.routes import api_bp
+    app.register_blueprint(api_bp, url_prefix="/api")
 
     return app
 
