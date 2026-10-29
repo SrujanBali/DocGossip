@@ -25,9 +25,25 @@ class Chat_Session(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     title = db.Column(db.String(255), default="New Chat")
 
+    def to_dict(self):
+        return{
+            "id": self.id,
+            "user_id": self.user_id,
+            "title": self.title
+        }
+
 class Message(db.Model):
     __tablename__ = "messages"
 
     id = db.Column(db.Integer, primary_key=True)
     chat_id = db.Column(db.Integer, db.ForeignKey("chat_sessions.id"), nullable=False)
     text_body = db.Column(db.Text, nullable=False)
+    is_ai = db.Column(db.Boolean, default=False, nullable=False)
+
+    def to_dict(self):
+        return{
+            "id": self.id,
+            "chat_id": self.chat_id,
+            "text_body": self.text_body,
+            "is_ai": self.is_ai
+        }
