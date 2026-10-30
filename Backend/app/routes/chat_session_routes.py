@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.database_services import create_chat_session, update_chat_session, delete_chat_session
+from app.database_services import create_chat_session, get_chat_sessions ,update_chat_session, delete_chat_session
 
 session_bp = Blueprint("sessions", __name__)
 
@@ -16,6 +16,14 @@ def create_chat_session_route():
         return jsonify(result), 201
     else:
         return jsonify(result), 400
+
+@session_bp.route("", methods=["GET"])
+def get_chat_sessions_route():
+    sessions = get_chat_sessions()
+    if sessions["success"]:
+        return jsonify(sessions), 200
+    else:
+        return jsonify(sessions), 500
 
 @session_bp.route("/<int:id>", methods=["PUT"])
 def update_chat_session_route(id):

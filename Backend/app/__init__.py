@@ -16,7 +16,7 @@ def create_app():
     db.init_app(app)
 
     with app.app_context():
-        from Backend.app import models
+        from app import models
         db.create_all()
 
     from app.routes.user_routes import users_bp

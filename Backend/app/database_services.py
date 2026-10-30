@@ -107,6 +107,15 @@ def create_chat_session(user_id, title="New Chat"):
         db.session.rollback()
         return make_response(False, f"Error while creating chat session: {e}")
 
+def get_chat_sessions():
+    try:
+        chat_sessions = Chat_Session.query.all()
+        chat_sessions_dict = [chat_session.to_dict() for chat_session in chat_sessions]
+
+        return make_response(True, "Fetched all chat sessions", chat_sessions=chat_sessions_dict)
+    except Exception as e:
+        return make_response(False, f"Error while fetching chat sessions: {e}")
+
 def update_chat_session(id, title):
     chat_session = Chat_Session.query.get(id)
     if chat_session:
