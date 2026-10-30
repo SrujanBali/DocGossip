@@ -16,11 +16,16 @@ def create_app():
     db.init_app(app)
 
     with app.app_context():
-        from app import models
+        from Backend.app import models
         db.create_all()
 
-    from app.routes import api_bp
-    app.register_blueprint(api_bp, url_prefix="/api")
+    from app.routes.user_routes import users_bp
+    from app.routes.message_routes import messages_bp
+    from app.routes.chat_session_routes import session_bp
+
+    app.register_blueprint(users_bp, url_prefix="/users")
+    app.register_blueprint(messages_bp, url_prefix="/messages")
+    app.register_blueprint(session_bp, url_prefix="/sessions")
 
     return app
 

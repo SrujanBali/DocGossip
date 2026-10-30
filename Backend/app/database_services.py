@@ -1,5 +1,5 @@
 from app.models import Users, Chat_Session, Message
-from app.app import db
+from app import db
 
 def make_response(success: bool, message: str, **kwargs) -> dict:
     response = {
@@ -64,7 +64,7 @@ def create_new_message(chat_id, text_body, is_ai=False):
         db.session.add(new_message)
         db.session.commit()
 
-        return make_response(True, "New message Created", message_id=new_message.id, is_ai=is_ai-new_message.is_ai)
+        return make_response(True, "New message Created", message_id=new_message.id, is_ai=new_message.is_ai)
 
     except Exception as e:
         db.session.rollback()
@@ -81,6 +81,15 @@ def get_messages():
     except Exception as e:
         return make_response(False, f"Error while fetching messages: {e}")
 
+def get_messages_by_chat(chat_id):
+    try:
+        messages = Message.query.filter_by(chat_id = chat_id).all()
+        messages_dict = [message.to_dict() for message in messages]
+
+        return make_response(True, f"Messages for chat id {chat_id} fetched.", messages=messages_dict)
+    except Exception as e:
+        return make_response(False, f"Error occured while fetching messages : {e}")
+    
 
 def create_chat_session(user_id, title="New Chat"):
     try:
