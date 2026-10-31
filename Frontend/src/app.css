@@ -1,1 +1,9 @@
-@import "tailwindcss"
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Passero+One&family=Roboto+Slab:wght@100..900&family=Tagesschrift&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+
+@import "tailwindcss";  
+
+@theme{
+    --font-passero: "Passero One", sans-serif;
+    --font-josefin: "Josefin Sans", sans-serif;
+    --font-roboto-slab: "Roboto Slab", sans-serif;
+}

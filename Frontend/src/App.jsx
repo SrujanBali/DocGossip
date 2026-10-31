@@ -1,12 +1,11 @@
-import "./app.css"
+import {Routes, Route} from "react-router"
+import Chat from "./Pages/Chat.jsx"
 
 function App() {
   return (
-    <>
-    <div className="flex w-full h-screen justify-center items-center">
-      <h1>Hello</h1>
-    </div>
-    </>
+    <Routes>
+      <Route path="/" element={<Chat />}  />
+    </Routes>
   )
 }
 
