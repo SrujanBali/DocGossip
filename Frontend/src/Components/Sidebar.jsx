@@ -6,7 +6,15 @@ function Sidebar({ showSidebar }) {
       className={`h-full bg-[#2d4a3e] border-2 transition-all duration-300 ease-in-out shrink-0 ${
         showSidebar ? "w-full sm:w-1/2 md:w-1/2 lg:w-1/5" : "w-0 overflow-hidden border-none"
       }`}
-    ></aside>
+    >
+      <div className="flex flex-col text-zinc-200 p-2">
+        <ul className="space-y-6">
+          <li>Current Chat Session</li>
+          <li>New Chat Session</li>
+          <li>Another New Chat Session</li>
+        </ul>
+      </div>
+    </aside>
   );
 }
 
