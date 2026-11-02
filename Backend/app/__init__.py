@@ -22,10 +22,12 @@ def create_app():
     from app.routes.user_routes import users_bp
     from app.routes.message_routes import messages_bp
     from app.routes.chat_session_routes import session_bp
+    from app.routes.llm_routes import local_llm_bp
 
     app.register_blueprint(users_bp, url_prefix="/users")
     app.register_blueprint(messages_bp, url_prefix="/messages")
     app.register_blueprint(session_bp, url_prefix="/sessions")
+    app.register_blueprint(local_llm_bp, url_prefix="/local_llm")
 
     return app
 
