@@ -3,7 +3,7 @@ from app.database_services import create_chat_session, get_chat_sessions ,update
 
 session_bp = Blueprint("sessions", __name__)
 
-@session_bp.route("", methods=["POST"])
+@session_bp.route("/", methods=["POST"])
 def create_chat_session_route():
     data = request.get_json()
 
@@ -17,7 +17,7 @@ def create_chat_session_route():
     else:
         return jsonify(result), 400
 
-@session_bp.route("", methods=["GET"])
+@session_bp.route("/", methods=["GET"])
 def get_chat_sessions_route():
     sessions = get_chat_sessions()
     if sessions["success"]:

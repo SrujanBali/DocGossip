@@ -3,7 +3,7 @@ from app.database_services import create_user, get_all_users, delete_user
 
 users_bp = Blueprint("users", __name__)
 
-@users_bp.route("", methods=["POST"])
+@users_bp.route("/", methods=["POST"])
 def add_user_route():
     data = request.get_json()
 
@@ -19,7 +19,7 @@ def add_user_route():
     else:
         return jsonify(result), 400
 
-@users_bp.route("", methods=["GET"])
+@users_bp.route("/", methods=["GET"])
 def get_all_users_route():
     users = get_all_users()
 

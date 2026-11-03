@@ -1,10 +1,10 @@
 import "../app.css"
 import TextArea from "./TextArea"
 
-function ChatScreen() {
+function ChatScreen({messages}) {
   return (
     <div className="flex-1 flex flex-col h-full bg-amber-50 relative overflow-y-auto px-6 pb-24">
-      <TextArea/>
+      <TextArea messages={messages}/>
       <div className="absolute bottom-4 left-6 right-6 flex h-[10%] items-center border-2 bg-[#dfccbf] rounded-2xl p-2">
         <textarea 
           name="text-box" 

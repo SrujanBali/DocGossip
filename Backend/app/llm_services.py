@@ -1,4 +1,6 @@
 from openai import OpenAI
+from app import db
+from app.models import Message
 
 local_client = OpenAI(
     base_url="http://localhost:11434/v1",
@@ -13,18 +15,38 @@ def make_response(success: bool, message: str, **kwargs) -> dict:
     response.update(kwargs)
     return response
 
-def get_local_llm_response(user_message):
+def get_local_llm_response(chat_id, text_body):
+    user_message = Message(
+        chat_id = chat_id,
+        text_body = text_body,
+        is_ai = False
+    )
     try:
+        db.session.add(user_message)
+        db.session.commit()
+
         response = local_client.chat.completions.create(
             model="llama3.2",
             messages=[
                 {"role": "system", "content" : "You are DocGossip, a helpful assistant to help with document analysis and comprehension"},
-                {"role": "user", "content": user_message}
+                {"role": "user", "content": text_body}
             ],
-            temperature=0.7
+            temperature=0.5
         )
-        return make_response(True, "LLM response fetched", response=response.choices[0].message.content)
+        llm_text = response.choices[0].message.content
+
+        llm_message = Message(
+            chat_id = chat_id,
+            text_body = llm_text,
+            is_ai = True
+        )
+        db.session.add(llm_message)
+        db.session.commit()
+
+        return make_response(True, "Reponse created and saved", response = llm_message.to_dict())
+
     except Exception as e:
+        db.session.rollback()
         return make_response(False, f"Error while connecting or fetching resposne from local LLM : {e}", response="Sorry! Couldnt reach the Local LLM. Check if Ollma is running and is configured correctly.")
 
 

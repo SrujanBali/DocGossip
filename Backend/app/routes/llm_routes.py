@@ -7,9 +7,10 @@ local_llm_bp = Blueprint("local_llm", __name__)
 def get_local_llm_reponse_route():
     data = request.get_json()
 
-    user_message = data.get("user_message")
+    chat_id = data.get("chat_id")
+    text_body = data.get("text_body")
 
-    response = get_local_llm_response(user_message)
+    response = get_local_llm_response(chat_id, text_body)
 
     if response["success"]:
         return jsonify(response), 200
