@@ -1,6 +1,6 @@
 import "../app.css";
 
-function Sidebar({ showSidebar }) {
+function Sidebar({ showSidebar, fetchMessages }) {
   return (
     <aside
       className={`h-full bg-[#2d4a3e] border-2 transition-all duration-300 ease-in-out shrink-0 ${
@@ -12,6 +12,7 @@ function Sidebar({ showSidebar }) {
           <li>Current Chat Session</li>
           <li>New Chat Session</li>
           <li>Another New Chat Session</li>
+          <button className="bg-amber-50 rounded-2xl w-[60%] text-black text-lg" onClick={() => fetchMessages(2)}>Fetch Messages</button>
         </ul>
       </div>
     </aside>
