@@ -64,7 +64,14 @@ def create_new_message(chat_id, text_body, is_ai=False):
         db.session.add(new_message)
         db.session.commit()
 
-        return make_response(True, "New message Created", message_id=new_message.id, is_ai=new_message.is_ai)
+        session_data = {
+            "id": new_message.id,
+            "chat_id": new_message.chat_id,
+            "text_body": new_message.text_body,
+            "is_ai": new_message.is_ai
+        }
+
+        return make_response(True, "New message Created", message=session_data)
 
     except Exception as e:
         db.session.rollback()
@@ -101,7 +108,13 @@ def create_chat_session(user_id, title="New Chat"):
         db.session.add(new_chat_session)
         db.session.commit()
 
-        return make_response(True, "New chat session created", chat_session_id=new_chat_session.id)
+        session_data = {
+            "id": new_chat_session.id,
+            "user_id": new_chat_session.user_id,
+            "title": new_chat_session.title
+        }
+
+        return make_response(True, "New chat session created", chat_session=session_data)
     
     except Exception as e:
         db.session.rollback()
