@@ -48,4 +48,34 @@ export const useChatStore = create((set) => ({
       console.error("Failed to create chat session. ", error);
     }
   },
+
+  updateSessionTitle: async (chatID, title) => {
+    try {
+      const res = await axios.put(`${base_URL}/api/sessions/${chatID}`, {
+        title: title,
+      });
+      set((state) => ({
+        chatSessions: state.chatSessions.map((session) =>
+          session.id === chatID
+            ? { ...session, title: res.data.new_title }
+            : session,
+        ),
+      }));
+    } catch (error) {
+      console.error("Failed to update session title : ", error);
+    }
+  },
+
+  deleteChatSession: async (chatID) => {
+    try {
+      await axios.delete(`${base_URL}/api/sessions/${chatID}`);
+      set((state) => ({
+        chatSessions: state.chatSessions.filter(
+          (session) => session.id !== chatID,
+        ),
+      }));
+    } catch (error) {
+      console.error("Failed to delete session title : ", error);
+    }
+  },
 }));
