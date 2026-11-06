@@ -13,7 +13,7 @@ function Chat() {
     chatSessions,
     fetchChatSessions,
     createChatSession,
-    // updateSessionTitle,
+    updateSessionTitle,
     deleteChatSession,
   } = useChatStore();
   const [current_session, setCurrentSession] = useState(null);
@@ -36,6 +36,7 @@ function Chat() {
           current_session={current_session}
           setCurrentSession={setCurrentSession}
           createChatSession={createChatSession}
+          updateSessionTitle={updateSessionTitle}
           deleteChatSession={deleteChatSession}
         />
         <ChatScreen showSidebar={showSidebar} messages={messages} />

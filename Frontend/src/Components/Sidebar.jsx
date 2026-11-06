@@ -9,9 +9,12 @@ function Sidebar({
   current_session,
   setCurrentSession,
   createChatSession,
+  updateSessionTitle,
   deleteChatSession,
 }) {
   const [openMenuID, setOpenMenuID] = useState(null);
+  const [renamingSession, setRenamingSession] = useState(null);
+  const [renamingTitle, setRenamingTitle] = useState("")
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -31,9 +34,24 @@ function Sidebar({
     setOpenMenuID(null);
   };
 
-  const toggleMenu = (e, sessionID) => {
+  const toggleMore = (e, sessionID) => {
     e.stopPropagation();
     setOpenMenuID(openMenuID === sessionID ? null : sessionID);
+  };
+
+  const handleOpenRename = (session) => {
+    setRenamingSession(session)
+    setRenamingTitle(session.title);
+    setOpenMenuID(null);
+  };
+
+  const handleRenameSubmit = () => {
+    if (renamingTitle.trim() === ""){
+      alert("Give your conversation a name!");
+      return
+    }
+    updateSessionTitle(renamingSession.id, renamingTitle)
+    setRenamingSession(null)
   };
 
   return (
@@ -74,7 +92,7 @@ function Sidebar({
                     {session.title}
                   </button>
                   <button
-                    onClick={(e) => toggleMenu(e, session.id)}
+                    onClick={(e) => toggleMore(e, session.id)}
                     className=" opacity-0 mr-1 hover:bg-black/80 bg-black/50 px-1 rounded-full group-hover:opacity-100 transition-opacity duration-200 text-bold "
                   >
                     <img src={MoreIcon} alt="More" width={25} />
@@ -84,7 +102,7 @@ function Sidebar({
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          setOpenMenuID(null);
+                          handleOpenRename(session);
                         }}
                         className="w-full text-left  px-4 py-2 text-lg hover:bg-zinc-500/50 rounded-t-xl hover:text-blue-300"
                       >
@@ -100,6 +118,33 @@ function Sidebar({
                       >
                         Delete
                       </button>
+                    </div>
+                  )}
+                  {renamingSession && (
+                    <div className="fixed inset-0  z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
+                      <div className="flex flex-col justify-between bg-zinc-900 text-zinc-100 p-6 rounded-2xl shadow-2xl border border-zinc-700 w-[90vw] sm:w-[50vw] md:w-[60vw] lg:w-[50vw] h-fit gap-3">
+                        <h3 className="text-2xl font-bold mb-2">
+                          Rename Conversation
+                        </h3>
+                        <input
+                          type="text"
+                          className="flex w-full text-2xl py-2 px-4 bg-white/10 rounded-2xl placeholder:opacity-50 focus:placeholder:opacity-0"
+                          value={renamingTitle}
+                          onChange={(e) => setRenamingTitle(e.target.value)}
+                          required
+                        />
+                        <div className="flex w-full p-2 flex-col sm:flex-row sm:justify-end justify-center sm:gap-6 gap-4 text-2xl">
+                          <button
+                            className="text-red-400 font-bold hover:scale-105"
+                            onClick={() => setRenamingSession(null)}
+                          >
+                            Cancel
+                          </button>
+                          <button className="text-blue-300 font-bold hover:scale-105" onClick={handleRenameSubmit}>
+                            Rename
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
