@@ -9,6 +9,8 @@ class Users(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
 
+    chat_sessions = db.relationship("Chat_Session", backref="user", lazy=True, cascade="all, delete-orphan")
+
     def to_dict(self):
         return{
             "id" : self.id,
@@ -24,6 +26,8 @@ class Chat_Session(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     title = db.Column(db.String(255), default="New Chat")
+
+    messages = db.relationship("Message", backref="chat_session", lazy=True, cascade="all, delete-orphan")
 
     def to_dict(self):
         return{
