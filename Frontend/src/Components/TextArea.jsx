@@ -1,8 +1,21 @@
+import { useEffect, useRef } from "react";
 import "../app.css";
 
 function TextArea({ messages }) {
+  const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [messages]);
+
   return (
-    <div className="flex-1 overflow-y-auto scrollbar-none">
+    <div
+      className="flex-1 overflow-y-auto scrollbar-none"
+      ref={scrollContainerRef}
+    >
       <div className="flex flex-col space-y-4 py-10 gap-7">
         {Array.isArray(messages) &&
           messages?.map((msg, index) => {
