@@ -7,3 +7,18 @@
     --font-josefin: "Josefin Sans", sans-serif;
     --font-roboto-slab: "Roboto Slab", sans-serif;
 }
+
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+
+.animate-message-appear{
+    animation: messageAppear 0.25s ease-out forwards;
+}

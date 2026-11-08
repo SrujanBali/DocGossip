@@ -17,14 +17,26 @@ function ChatScreen({
     setTextBody("");
   };
 
+  const handleEnterKeyPress = (event) => {
+    if (textBody.trim() === "") return;
+
+    if (event.key === "Enter") {
+      if (!event.shiftKey) {
+        event.preventDefault();
+        handleSendMessage();
+      }
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col h-full bg-amber-50 relative overflow-y-auto px-6 pb-24">
       <TextArea messages={messages} llm_processing={llm_processing} />
-      <div className="absolute bottom-4 left-6 right-6 flex h-[10%] items-center border-2 bg-[#dfccbf] rounded-2xl p-2">
+      <div className="text-area absolute bottom-4 left-6 right-6 flex h-[10%] items-center border-2 bg-[#dfccbf] rounded-2xl p-2">
         <textarea
           name="text-box"
           id="text-box"
           value={textBody}
+          onKeyDown={handleEnterKeyPress}
           onChange={(e) => setTextBody(e.target.value)}
           className="flex w-full h-full rounded-2xl text-xl p-2 outline-none resize-none"
           placeholder="Type your message here..."

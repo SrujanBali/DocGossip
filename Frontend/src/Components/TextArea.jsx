@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "react";
 import "../app.css";
+import { useEffect, useRef } from "react";
+import ReactMarkdown from 'react-markdown'
+import {SyncLoader} from "react-spinners"
 
 function TextArea({ messages, llm_processing }) {
   const scrollContainerRef = useRef(null);
@@ -23,12 +25,12 @@ function TextArea({ messages, llm_processing }) {
             return (
               <div
                 key={msg?.id || index}
-                className={`flex flex-col ${isMe ? "items-end" : "items-start"} `}
+                className={`flex flex-col ${isMe ? "items-end" : "items-start"} animate-message-appear`}
               >
                 <div
-                  className={`max-w-[70%] rounded-lg wrap-break-word  text-[25px] py-4 px-2 ${isMe ? "bg-blue-300" : ""}`}
+                  className={`max-w-[70%] rounded-lg wrap-break-word  text-[25px] pt-4 pb-5 px-3 ${isMe ? "bg-blue-300" : ""}`}
                 >
-                  <p>{msg?.text_body}</p>
+                  <ReactMarkdown>{msg?.text_body}</ReactMarkdown>
                 </div>
               </div>
             );
@@ -36,7 +38,7 @@ function TextArea({ messages, llm_processing }) {
         {llm_processing && (
           <div>
             <div className="max-w-[70%] rounded-lg wrap-break-word  text-[25px] py-4 px-2">
-              LLM Loading
+              <SyncLoader size={10}/>
             </div>
           </div>
         )}
