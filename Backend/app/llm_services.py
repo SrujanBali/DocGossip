@@ -22,9 +22,6 @@ def get_local_llm_response(chat_id, text_body):
         is_ai = False
     )
     try:
-        db.session.add(user_message)
-        db.session.commit()
-
         response = local_client.chat.completions.create(
             model="llama3.2",
             messages=[
@@ -40,14 +37,20 @@ def get_local_llm_response(chat_id, text_body):
             text_body = llm_text,
             is_ai = True
         )
+
+        db.session.add(user_message)
         db.session.add(llm_message)
+
         db.session.commit()
 
-        return make_response(True, "Reponse created and saved", response = llm_message.to_dict())
+        db.session.refresh(user_message)
+        db.session.refresh(llm_message)
+
+        return make_response(True, "Reponse created and saved", llm_message = llm_message.to_dict(), user_message = user_message.to_dict())
 
     except Exception as e:
         db.session.rollback()
-        return make_response(False, f"Error while connecting or fetching resposne from local LLM : {e}", response="Sorry! Couldnt reach the Local LLM. Check if Ollma is running and is configured correctly.")
+        return make_response(False, f"Error while connecting or fetching resposne from local LLM : {e}", error_detail="Sorry! Couldn't reach the Local LLM. Check if Ollama is running and is configured correctly.")
 
 
 # if __name__ == "__main__":
