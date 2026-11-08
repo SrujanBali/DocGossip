@@ -7,6 +7,7 @@ export const useChatStore = create((set) => ({
   messages: [],
   chatSessions: [],
   isLoading: false,
+  llm_processing: false,
 
   fetchMessages: async (chatID) => {
     try {
@@ -76,6 +77,41 @@ export const useChatStore = create((set) => ({
       }));
     } catch (error) {
       console.error("Failed to delete session title : ", error);
+    }
+  },
+
+  createMessage: async (chatID, text_body) => {
+    const tempID = `temp-${Date.now()}`;
+    const optimisticUserMsg = {
+      id: tempID,
+      chat_id: chatID,
+      text_body: text_body,
+      is_ai: false,
+    };
+
+    set((state) => ({
+      messages: [...state.messages, optimisticUserMsg],
+    }));
+    try {
+      set({ llm_processing: true });
+      const res = await axios.post(`${base_URL}/api/local_llm/${chatID}`, {
+        text_body: text_body,
+      });
+      set((state) => ({
+        messages: [
+          ...state.messages.filter((msg) => msg.id !== tempID),
+          res.data.user_message,
+          res.data.llm_message,
+        ],
+      }));
+      set({ llm_processing: false });
+    } catch (error) {
+      console.error("Failed to send message: ", error);
+      set({ llm_processing: false });
+
+      set((state) => ({
+        messages: state.messages.filter((msg) => msg.id !== tempID),
+      }));
     }
   },
 }));

@@ -9,12 +9,14 @@ function Chat() {
   const [showSidebar, setShowSidebar] = useState(true);
   const {
     messages,
+    llm_processing,
     fetchMessages,
     chatSessions,
     fetchChatSessions,
     createChatSession,
     updateSessionTitle,
     deleteChatSession,
+    createMessage,
   } = useChatStore();
   const [current_session, setCurrentSession] = useState(null);
 
@@ -39,7 +41,13 @@ function Chat() {
           updateSessionTitle={updateSessionTitle}
           deleteChatSession={deleteChatSession}
         />
-        <ChatScreen showSidebar={showSidebar} messages={messages} />
+        <ChatScreen
+          showSidebar={showSidebar}
+          messages={messages}
+          createMessage={createMessage}
+          current_session={current_session}
+          llm_processing={llm_processing}
+        />
       </div>
     </div>
   );
