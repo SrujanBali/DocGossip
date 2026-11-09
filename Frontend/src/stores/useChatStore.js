@@ -6,31 +6,41 @@ const base_URL = import.meta.env.VITE_BASE_URL;
 export const useChatStore = create((set) => ({
   messages: [],
   chatSessions: [],
-  isLoading: false,
+  currentSessionID: null,
+  isSessionLoading: false,
+  isMessagesLoading: false,
   llm_processing: false,
 
+  setCurrentSessionID: (sessionID) => set({ currentSessionID: sessionID }),
+
+  setMessagesNull: () => set({ messages: [] }),
+
   fetchMessages: async (chatID) => {
+    if (!chatID) {
+      set({ messagse: [] });
+      return;
+    }
     try {
-      set({ isLoading: true });
+      set({ isMessagesLoading: true });
       const res = await axios.get(`${base_URL}/api/messages/${chatID}`);
-      set({ messages: res.data.messages, isLoading: false });
+      set({ messages: res.data.messages, isMessagesLoading: false });
     } catch (error) {
       console.error(
         `Failed to load messsage by ID:- ${chatID} Error:-  `,
         error,
       );
-      set({ isLoading: false });
+      set({ isMessagesLoading: false });
     }
   },
 
   fetchChatSessions: async () => {
     try {
-      set({ isLoading: true });
+      set({ isSessionLoading: true });
       const res = await axios.get(`${base_URL}/api/sessions/`);
-      set({ chatSessions: res.data.chat_sessions, isLoading: false });
+      set({ chatSessions: res.data.chat_sessions, isSessionLoading: false });
     } catch (error) {
       console.error("Failed to load all chat sessions", error);
-      set({ isLoading: false });
+      set({ isSessionLoading: false });
     }
   },
 

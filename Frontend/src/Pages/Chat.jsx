@@ -9,7 +9,12 @@ function Chat() {
   const [showSidebar, setShowSidebar] = useState(true);
   const {
     messages,
+    isSessionLoading,
+    isMessagesLoading,
+    setMessagesNull,
     llm_processing,
+    currentSessionID,
+    setCurrentSessionID,
     fetchMessages,
     chatSessions,
     fetchChatSessions,
@@ -18,7 +23,6 @@ function Chat() {
     deleteChatSession,
     createMessage,
   } = useChatStore();
-  const [current_session, setCurrentSession] = useState(null);
 
   useEffect(() => {
     fetchChatSessions();
@@ -32,20 +36,23 @@ function Chat() {
       />
       <div className="flex w-full h-full pt-16">
         <Sidebar
+          isSessionLoading={isSessionLoading}
           showSidebar={showSidebar}
           fetchMessages={fetchMessages}
+          setMessagesNull={setMessagesNull}
           chatSessions={chatSessions}
-          current_session={current_session}
-          setCurrentSession={setCurrentSession}
+          currentSessionID={currentSessionID}
+          setCurrentSessionID={setCurrentSessionID}
           createChatSession={createChatSession}
           updateSessionTitle={updateSessionTitle}
           deleteChatSession={deleteChatSession}
         />
         <ChatScreen
+          isMessagesLoading={isMessagesLoading}
           showSidebar={showSidebar}
           messages={messages}
           createMessage={createMessage}
-          current_session={current_session}
+          currentSessionID={currentSessionID}
           llm_processing={llm_processing}
         />
       </div>

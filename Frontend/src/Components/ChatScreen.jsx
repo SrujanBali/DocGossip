@@ -3,17 +3,17 @@ import "../app.css";
 import TextArea from "./TextArea";
 
 function ChatScreen({
+  isMessagesLoading,
   messages,
   createMessage,
-  current_session,
+  currentSessionID,
   llm_processing,
 }) {
   const [textBody, setTextBody] = useState("");
 
   const handleSendMessage = () => {
     if (textBody.trim() === "") return;
-    console.log("Chat Screen current_session: ", current_session);
-    createMessage(current_session, textBody);
+    createMessage(currentSessionID, textBody);
     setTextBody("");
   };
 
@@ -30,7 +30,11 @@ function ChatScreen({
 
   return (
     <div className="flex-1 flex flex-col h-full bg-amber-50 relative overflow-y-auto px-6 pb-24">
-      <TextArea messages={messages} llm_processing={llm_processing} />
+      <TextArea
+        messages={messages}
+        llm_processing={llm_processing}
+        isMessagesLoading={isMessagesLoading}
+      />
       <div className="text-area absolute bottom-4 left-6 right-6 flex h-[10%] items-center border-2 bg-[#dfccbf] rounded-2xl p-2">
         <textarea
           name="text-box"
