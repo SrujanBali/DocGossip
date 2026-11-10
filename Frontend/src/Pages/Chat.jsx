@@ -11,7 +11,6 @@ function Chat() {
     messages,
     isSessionLoading,
     isMessagesLoading,
-    setMessagesNull,
     llm_processing,
     currentSessionID,
     setCurrentSessionID,
@@ -39,7 +38,6 @@ function Chat() {
           isSessionLoading={isSessionLoading}
           showSidebar={showSidebar}
           fetchMessages={fetchMessages}
-          setMessagesNull={setMessagesNull}
           chatSessions={chatSessions}
           currentSessionID={currentSessionID}
           setCurrentSessionID={setCurrentSessionID}

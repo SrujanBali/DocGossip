@@ -6,7 +6,6 @@ function Sidebar({
   isSessionLoading,
   showSidebar,
   fetchMessages,
-  setMessagesNull,
   chatSessions,
   currentSessionID,
   setCurrentSessionID,
@@ -65,6 +64,7 @@ function Sidebar({
       }`}
     >
       <div className="flex flex-col w-full h-full text-zinc-200 p-2 ">
+        <button className="cursor-pointer bg-black/30" onClick={() => setCurrentSessionID(null)} >Clear Current Session</button>
         <div className="flex w-full bg-black/30 justify-between items-center my-4 p-1">
           <h5
             className={`flex justify-center text-md transition-transform duration-300 ease-in  ${showSidebar ? "" : " -translate-x-50"}`}
@@ -119,7 +119,6 @@ function Sidebar({
                             deleteChatSession(session.id);
                             setCurrentSessionID(null);
                             setOpenMenuID(null);
-                            setMessagesNull();
                           }}
                           className="w-full text-left  px-4 py-2 text-lg hover:bg-zinc-500/50 rounded-b-xl hover:text-red-300"
                         >

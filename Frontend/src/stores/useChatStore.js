@@ -3,7 +3,7 @@ import axios from "axios";
 
 const base_URL = import.meta.env.VITE_BASE_URL;
 
-export const useChatStore = create((set) => ({
+export const useChatStore = create((set, get) => ({
   messages: [],
   chatSessions: [],
   currentSessionID: null,
@@ -11,9 +11,15 @@ export const useChatStore = create((set) => ({
   isMessagesLoading: false,
   llm_processing: false,
 
-  setCurrentSessionID: (sessionID) => set({ currentSessionID: sessionID }),
 
   setMessagesNull: () => set({ messages: [] }),
+
+  setCurrentSessionID : (sessionID) => {
+    if (sessionID === null) {
+      get().setMessagesNull()
+    }
+    set({currentSessionID: sessionID})
+  },
 
   fetchMessages: async (chatID) => {
     if (!chatID) {

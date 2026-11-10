@@ -1,12 +1,14 @@
 import "../app.css";
 import { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
-import { SyncLoader } from "react-spinners";
+import { SyncLoader, RingLoader } from "react-spinners";
+import WelcomeModal from "./WelcomeModal";
 
 function TextArea({
   messages,
   llm_processing,
   isMessagesLoading,
+  currentSessionID,
 }) {
   const scrollContainerRef = useRef(null);
 
@@ -22,10 +24,12 @@ function TextArea({
       className="flex-1 overflow-y-auto scrollbar-none"
       ref={scrollContainerRef}
     >
-      {isMessagesLoading ? (
-        <div className="flex justify-center items-center h-full">
-          Loading...
-        </div>
+      {currentSessionID === null ? (
+        <WelcomeModal />
+      ) : isMessagesLoading ? (
+          <div className="flex justify-center items-center h-full">
+            <RingLoader width={15} />
+          </div>
       ) : (
         <div className="flex flex-col space-y-4 py-10 gap-7">
           {Array.isArray(messages) &&
