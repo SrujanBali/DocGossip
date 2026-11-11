@@ -1,7 +1,9 @@
 import os
+import time
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from sqlalchemy.exc import OperationalError
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,14 +15,29 @@ def create_app():
 
     CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("MY_SQL_CONNECTION_STRING")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("MY_SQL_CONNECTION_STRING")
 
     db.init_app(app)
 
     with app.app_context():
         from app import models
-        db.create_all()
+
+        max_retries = 10
+        retry_interval = 3
+
+        for attempt in range(max_retries):
+            try:
+                db.create_all()
+                print("Database connected and tables created successfully")
+                break
+            except OperationalError as e:
+                if attempt < max_retries -1:
+                    print(f'Database not ready yet (attempt {attempt + 1}/{max_retries}). Retrying in {retry_interval}')
+                    time.sleep(retry_interval)
+                else:
+                    print("Coudnt connect to the database, max retries reached")
+                    raise e
 
     from app.routes.user_routes import users_bp
     from app.routes.message_routes import messages_bp
