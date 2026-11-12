@@ -4,6 +4,7 @@ class Users(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key = True)
+    auth0_id = db.Column(db.String(128), unique=True, nullable=False)
     first_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80))
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -14,6 +15,7 @@ class Users(db.Model):
     def to_dict(self):
         return{
             "id" : self.id,
+            "auth0_id": self.auth0_id,
             "first_name": self.first_name,
             "last_name": self.last_name,
             "username": self.username,
