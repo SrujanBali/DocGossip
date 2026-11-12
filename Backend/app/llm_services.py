@@ -3,7 +3,7 @@ from app import db
 from app.models import Message
 
 local_client = OpenAI(
-    base_url="http://localhost:11434/v1",
+    base_url="http://host.docker.internal:11434/v1",
     api_key="ollama"
 )
 
