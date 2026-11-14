@@ -13,9 +13,10 @@ def sync_user():
     auth0_id = g.auth0_id
     email = data.get("email")
     name = data.get("name", "").split(" ")
-    first_name = name[0] if len(name) > 0 else " "
-    last_name = name[1] if len(name) > 1 else " "
-    username = data.get("nickname") or email.split("@")[0]
+    first_name = name[0] if len(name) > 0 else ""
+    last_name = name[1] if len(name) > 1 else ""
+    email_prefix = email.split("@")[0] if email and "@" in email else "user"
+    username = data.get("nickname") or email_prefix
 
     user = Users.query.filter_by(auth0_id=auth0_id).first()
 
