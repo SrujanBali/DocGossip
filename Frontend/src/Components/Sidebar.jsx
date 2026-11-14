@@ -12,6 +12,7 @@ function Sidebar({
   createChatSession,
   updateSessionTitle,
   deleteChatSession,
+  currentUser
 }) {
   const [openMenuID, setOpenMenuID] = useState(null);
   const [renamingSession, setRenamingSession] = useState(null);
@@ -73,7 +74,7 @@ function Sidebar({
           </h5>
           <button
             className="cursor-pointer"
-            onClick={() => createChatSession(2)}
+            onClick={() => createChatSession(currentUser.id)}
           >
             ➕
           </button>

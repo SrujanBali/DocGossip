@@ -4,6 +4,7 @@ import Navbar from "../Components/Navbar";
 import Sidebar from "../Components/Sidebar";
 import ChatScreen from "../Components/ChatScreen";
 import { useChatStore } from "../stores/useChatStore.js";
+import useSyncUser from "../Hooks/useSyncUser.js";
 
 function Chat() {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -22,6 +23,8 @@ function Chat() {
     deleteChatSession,
     createMessage,
   } = useChatStore();
+
+  const { currentUser } = useSyncUser();
 
   useEffect(() => {
     fetchChatSessions();
@@ -44,6 +47,7 @@ function Chat() {
           createChatSession={createChatSession}
           updateSessionTitle={updateSessionTitle}
           deleteChatSession={deleteChatSession}
+          currentUser={currentUser}
         />
         <ChatScreen
           isMessagesLoading={isMessagesLoading}
