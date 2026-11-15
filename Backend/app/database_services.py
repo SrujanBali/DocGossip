@@ -129,8 +129,17 @@ def get_chat_sessions():
     except Exception as e:
         return make_response(False, f"Error while fetching chat sessions: {e}")
 
-def update_chat_session(id, title):
-    chat_session = Chat_Session.query.get(id)
+def get_chat_session_by_id(user_id):
+    try:
+        chat_sessions = Chat_Session.query.filter_by(user_id= user_id).all()
+        chat_session_dict = [chat_session.to_dict() for chat_session in chat_sessions]
+
+        return make_response(True, f"Fetched all chat sessions for id: {user_id}", chat_sessions= chat_session_dict)
+    except Exception as e:
+        return make_response(False, f"Error while fetching chat sessions by ID")
+
+def update_chat_session(id, title, userID):
+    chat_session = Chat_Session.query.filter_by(id=id, user_id = userID).first()
     if chat_session:
         try:
             chat_session.title = title
@@ -143,8 +152,8 @@ def update_chat_session(id, title):
     else:
         return make_response(False, f"No chat session with the id {id} found in the database")
 
-def delete_chat_session(id):
-    chat_session = Chat_Session.query.get(id)
+def delete_chat_session(id, userID):
+    chat_session = Chat_Session.query.filter_by(id=id, userID=userID)
     if chat_session:
         try:
             db.session.delete(chat_session)
