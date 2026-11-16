@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
-
-const base_URL = import.meta.env.VITE_BASE_URL;
+import api from "../API/axios";
 
 export const useChatStore = create((set, get) => ({
   messages: [],
@@ -11,14 +9,13 @@ export const useChatStore = create((set, get) => ({
   isMessagesLoading: false,
   llm_processing: false,
 
-
   setMessagesNull: () => set({ messages: [] }),
 
-  setCurrentSessionID : (sessionID) => {
+  setCurrentSessionID: (sessionID) => {
     if (sessionID === null) {
-      get().setMessagesNull()
+      get().setMessagesNull();
     }
-    set({currentSessionID: sessionID})
+    set({ currentSessionID: sessionID });
   },
 
   fetchMessages: async (chatID) => {
@@ -28,7 +25,7 @@ export const useChatStore = create((set, get) => ({
     }
     try {
       set({ isMessagesLoading: true });
-      const res = await axios.get(`${base_URL}/api/messages/${chatID}`);
+      const res = await api.get(`/api/messages/${chatID}`);
       set({ messages: res.data.messages, isMessagesLoading: false });
     } catch (error) {
       console.error(
@@ -42,7 +39,7 @@ export const useChatStore = create((set, get) => ({
   fetchChatSessions: async () => {
     try {
       set({ isSessionLoading: true });
-      const res = await axios.get(`${base_URL}/api/sessions/`);
+      const res = await api.get("/api/sessions/");
       set({ chatSessions: res.data.chat_sessions, isSessionLoading: false });
     } catch (error) {
       console.error("Failed to load all chat sessions", error);
@@ -50,10 +47,9 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  createChatSession: async (userID) => {
+  createChatSession: async () => {
     try {
-      const res = await axios.post(`${base_URL}/api/sessions/`, {
-        user_id: userID,
+      const res = await api.post("/api/sessions/", {
         title: "New Chat",
       });
       set((state) => ({
@@ -68,7 +64,7 @@ export const useChatStore = create((set, get) => ({
 
   updateSessionTitle: async (chatID, title) => {
     try {
-      const res = await axios.put(`${base_URL}/api/sessions/${chatID}`, {
+      const res = await api.put(`/api/sessions/${chatID}`, {
         title: title,
       });
       set((state) => ({
@@ -85,7 +81,7 @@ export const useChatStore = create((set, get) => ({
 
   deleteChatSession: async (chatID) => {
     try {
-      await axios.delete(`${base_URL}/api/sessions/${chatID}`);
+      await api.delete(`/api/sessions/${chatID}`);
       set((state) => ({
         chatSessions: state.chatSessions.filter(
           (session) => session.id !== chatID,
@@ -110,7 +106,7 @@ export const useChatStore = create((set, get) => ({
     }));
     try {
       set({ llm_processing: true });
-      const res = await axios.post(`${base_URL}/api/local_llm/${chatID}`, {
+      const res = await api.post(`/api/local_llm/${chatID}`, {
         text_body: text_body,
       });
       set((state) => ({

@@ -5,11 +5,12 @@ import axios from "axios";
 const base_URL = import.meta.env.VITE_BASE_URL;
 
 function useSyncUser() {
-  const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, user, getAccessTokenSilently, isLoading: authLoading } = useAuth0();
   const [currentUser, setCurrentUser] = useState(null);
   const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
+    if (authLoading) return;
     async function sync() {
       if (isAuthenticated && user) {
         try {
@@ -38,7 +39,7 @@ function useSyncUser() {
       }
     }
     sync();
-  }, [isAuthenticated, user, getAccessTokenSilently]);
+  }, [isAuthenticated, user, getAccessTokenSilently, authLoading]);
   return { currentUser, userLoading };
 }
 

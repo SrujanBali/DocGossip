@@ -15,6 +15,8 @@ createRoot(document.getElementById("root")).render(
           audience: "http://docgossip-api",
           scope: "openid profile email",
         }}
+        cacheLocation="localstorage"
+        useRefreshTokens={true}
       >
         <App />
       </Auth0Provider>
