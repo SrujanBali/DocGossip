@@ -28,6 +28,13 @@ class Chat_Session(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     title = db.Column(db.String(255), default="New Chat")
+    created_at = db.Column(db.DateTime, nullable=False, server_default=db.func.current_timestamp())
+    updated_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        server_default=db.func.current_timestamp(),
+        onupdate =db.func.current_timestamp()
+    )
 
     messages = db.relationship("Message", backref="chat_session", lazy=True, cascade="all, delete-orphan")
 
@@ -35,7 +42,9 @@ class Chat_Session(db.Model):
         return{
             "id": self.id,
             "user_id": self.user_id,
-            "title": self.title
+            "title": self.title,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None
         }
 
 class Message(db.Model):

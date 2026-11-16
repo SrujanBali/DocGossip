@@ -16,6 +16,8 @@ jwks_client = PyJWKClient(JWKS_URL)
 def require_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
+        if request.method == "OPTIONS":
+            return jsonify({}), 200
         auth_header = request.headers.get("Authorization", "")
         if not auth_header.startswith("Bearer "):
             return jsonify({"error": "Missing or invalid token format"}), 401
