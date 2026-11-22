@@ -7,6 +7,12 @@ local_client = OpenAI(
     api_key="ollama"
 )
 
+SYSTEM_PROMPT = (
+    "You are DocGossip, a helpful assitant to help with document analysis and comprehension"
+)
+
+MAX_HISTORY_MESSAGES = 20
+
 def make_response(success: bool, message: str, **kwargs) -> dict:
     response = {
         "success": success,
@@ -22,12 +28,23 @@ def get_local_llm_response(chat_id, text_body):
         is_ai = False
     )
     try:
+        recent_messages = (
+            Message.query.filter_by(chat_id = chat_id).order_by(Message.id.desc()).limit(MAX_HISTORY_MESSAGES).all()
+        )
+        recent_messages.reverse()
+
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        for msg in recent_messages:
+            messages.append({
+                "role": "assistant" if msg.is_ai else "user",
+                "content": msg.text_body
+            })
+
+        messages.append({"role": "user", "content": text_body})
+
         response = local_client.chat.completions.create(
             model="llama3.2",
-            messages=[
-                {"role": "system", "content" : "You are DocGossip, a helpful assistant to help with document analysis and comprehension"},
-                {"role": "user", "content": text_body}
-            ],
+            messages=messages,
             temperature=0.5
         )
         llm_text = response.choices[0].message.content
