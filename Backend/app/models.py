@@ -28,6 +28,8 @@ class Chat_Session(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     title = db.Column(db.String(255), default="New Chat")
+    summary = db.Column(db.Text, nullalbe=True)
+    last_summarized_msg_id = db.Column(db.Integer, nullable=False, default=0)
     created_at = db.Column(db.DateTime, nullable=False, server_default=db.func.current_timestamp())
     updated_at = db.Column(
         db.DateTime,
