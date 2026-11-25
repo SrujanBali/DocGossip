@@ -1,7 +1,7 @@
 import "../app.css";
 import { useState } from "react";
 
-function PrompBox({ createMessage, currentSessionID }) {
+function PrompBox({ createMessage, currentSessionID, llm_processing }) {
   const [textBody, setTextBody] = useState("");
 
   const handleSendMessage = () => {
@@ -11,7 +11,7 @@ function PrompBox({ createMessage, currentSessionID }) {
   };
 
   const handleEnterKeyPress = (event) => {
-    if (textBody.trim() === "") return;
+    if (textBody.trim() === "" || llm_processing) return;
 
     if (event.key === "Enter") {
       if (!event.shiftKey) {
@@ -36,8 +36,9 @@ function PrompBox({ createMessage, currentSessionID }) {
           placeholder="Type your message here..."
         ></textarea>
         <button
-          className="bg-[#5c7f67] text-white rounded-xl px-4 py-2 ml-2 cursor-pointer"
+          className={` text-white rounded-xl px-4 py-2 ml-2 cursor-pointer ${llm_processing? "bg-gray-600 cursor-not-allowed": "bg-[#5c7f67] cursor-crosshair"}` }
           onClick={handleSendMessage}
+          disabled={llm_processing}
         >
           Send
         </button>

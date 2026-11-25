@@ -1,24 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Passero+One&family=Roboto+Slab:wght@100..900&family=Tagesschrift&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Passero+One&family=Roboto+Slab:wght@100..900&family=Tagesschrift&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap");
 
-@import "tailwindcss";  
+@import "tailwindcss";
 
-@theme{
-    --font-passero: "Passero One", sans-serif;
-    --font-josefin: "Josefin Sans", sans-serif;
-    --font-roboto-slab: "Roboto Slab", sans-serif;
+@layer base {
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    font-family:
+      "Inter",
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@theme {
+  --font-passero: "Passero One", sans-serif;
+  --font-josefin: "Josefin Sans", sans-serif;
+  --font-roboto-slab: "Roboto Slab", sans-serif;
 }
 
 @keyframes messageAppear {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0)
-    }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.animate-message-appear{
-    animation: messageAppear 0.25s ease-out forwards;
+.animate-message-appear {
+  animation: messageAppear 0.25s ease-out forwards;
 }

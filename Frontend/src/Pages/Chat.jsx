@@ -1,8 +1,8 @@
 import "../app.css";
 import { useEffect, useState } from "react";
-import Navbar from "../Components/Navbar";
-import Sidebar from "../Components/Sidebar";
-import ChatScreen from "../Components/ChatScreen";
+import Navbar from "../Components/Navbar.jsx";
+import Sidebar from "../Components/Sidebar.jsx";
+import ChatScreen from "../Components/ChatScreen.jsx";
 import { useChatStore } from "../stores/useChatStore.js";
 
 function Chat({ currentUser }) {

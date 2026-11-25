@@ -20,6 +20,7 @@ function ChatScreen({
       <PromptBox
         currentSessionID={currentSessionID}
         createMessage={createMessage}
+        llm_processing={llm_processing}
       />
     </div>
   );
