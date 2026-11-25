@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../app.css";
 import MoreIcon from "../assets/more_icon.svg";
+import FileUpload from "../assets/file-upload.avif"
 
 function Sidebar({
   isSessionLoading,
@@ -64,8 +65,8 @@ function Sidebar({
           : "w-0 overflow-hidden border-none"
       }`}
     >
-      <div className="flex flex-col w-full h-full text-zinc-200 p-2 ">
-        <button className="cursor-pointer bg-black/30" onClick={() => setCurrentSessionID(null)} >Clear Current Session</button>
+      <div className="flex flex-col w-full h-[70%] text-zinc-200 p-2 ">
+        {/* <button className="cursor-pointer bg-black/30" onClick={() => setCurrentSessionID(null)} >Clear Current Session</button> */}
         <div className="flex w-full bg-black/30 justify-between items-center my-4 p-1">
           <h5
             className={`flex justify-center text-md transition-transform duration-300 ease-in  ${showSidebar ? "" : " -translate-x-50"}`}
@@ -162,6 +163,9 @@ function Sidebar({
               })}
           </ul>
         )}
+      </div>
+      <div className="flex flex-1 w-full h-full bg-green-700/60 border-t-4 hover:blur-xs justify-center">
+       <img src={FileUpload} alt="File Upload" className="w-40 h-40" />
       </div>
     </aside>
   );
